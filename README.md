@@ -1,3 +1,11 @@
+# Score-Based Generative Model with DPM-Solver
+
+We support the PyTorch version for DPM-Solver in this repo. The example command can be found in `sample.sh`. We used the `cifar10_ddpmpp_deep_continuous` pretrained `checkpoint_8.pth` in [Yang Song's google drive](https://drive.google.com/drive/folders/1ZMLBiu9j7-rpdTQu8M2LlHAEQq4xRYrj).
+
+The stats file for evaluating the FID on CIFAR-10 is the same as the original repo. You can download [`cifar10_stats.npz`](https://drive.google.com/file/d/14UB27-Spi8VjZYKST3ZcT8YVhAluiFWI/view?usp=sharing)  and save it to `assets/stats/`.
+
+<br />
+
 # Score-Based Generative Modeling through Stochastic Differential Equations
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/score-based-generative-modeling-through-1/image-generation-on-cifar-10)](https://paperswithcode.com/sota/image-generation-on-cifar-10?p=score-based-generative-modeling-through-1)
