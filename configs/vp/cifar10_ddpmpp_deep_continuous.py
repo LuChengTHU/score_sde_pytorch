@@ -30,9 +30,26 @@ def get_config():
 
   # sampling
   sampling = config.sampling
-  sampling.method = 'pc'
-  sampling.predictor = 'euler_maruyama'
-  sampling.corrector = 'none'
+  # sampling.method = 'pc'
+  # sampling.predictor = 'euler_maruyama'
+  # sampling.corrector = 'none'
+
+  sampling.eps = 1e-3
+  sampling.method = 'dpm_solver'
+  sampling.dpm_solver_method = 'singlestep'
+  sampling.dpm_solver_order = 3
+  sampling.predict_x0 = False
+  sampling.thresholding = False
+  sampling.noise_removal = False
+  sampling.steps = 10
+  sampling.skip_type = 'logSNR'
+  sampling.rtol = 0.05
+
+  # sampling.method = 'ode'
+  # sampling.eps = 1e-4
+  # sampling.noise_removal = False
+  sampling.rk45_rtol = 1e-5
+  sampling.rk45_atol = 1e-5
 
   # data
   data = config.data

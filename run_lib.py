@@ -328,6 +328,7 @@ def evaluate(config,
 
     # Generate samples and compute IS/FID/KID when enabled
     if config.eval.enable_sampling:
+      logging.info(eval_dir)
       num_sampling_rounds = config.eval.num_samples // config.eval.batch_size + 1
       for r in range(num_sampling_rounds):
         logging.info("sampling -- ckpt: %d, round: %d" % (ckpt, r))
@@ -336,8 +337,8 @@ def evaluate(config,
         this_sample_dir = os.path.join(
           eval_dir, f"ckpt_{ckpt}")
         tf.io.gfile.makedirs(this_sample_dir)
-        samples, n = sampling_fn(score_model)
-        samples = np.clip(samples.permute(0, 2, 3, 1).cpu().numpy() * 255., 0, 255).astype(np.uint8)
+        samples_raw, n = sampling_fn(score_model)
+        samples = np.clip(samples_raw.permute(0, 2, 3, 1).cpu().numpy() * 255., 0, 255).astype(np.uint8)
         samples = samples.reshape(
           (-1, config.data.image_size, config.data.image_size, config.data.num_channels))
         # Write samples to disk or Google Cloud Storage
@@ -346,6 +347,13 @@ def evaluate(config,
           io_buffer = io.BytesIO()
           np.savez_compressed(io_buffer, samples=samples)
           fout.write(io_buffer.getvalue())
+
+        if r == 0:
+          nrow = int(np.sqrt(samples_raw.shape[0]))
+          image_grid = make_grid(samples_raw, nrow, padding=2)
+          with tf.io.gfile.GFile(
+              os.path.join(this_sample_dir, "sample.png"), "wb") as fout:
+            save_image(image_grid, fout)
 
         # Force garbage collection before calling TensorFlow code for Inception network
         gc.collect()

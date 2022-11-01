@@ -33,6 +33,8 @@ flags.DEFINE_string("eval_folder", "eval",
                     "The folder name for storing evaluation results")
 flags.mark_flags_as_required(["workdir", "config", "mode"])
 
+tf.config.experimental.set_visible_devices([], "GPU")
+os.environ['XLA_PYTHON_CLIENT_PREALLOCATE'] = 'false'
 
 def main(argv):
   if FLAGS.mode == "train":
